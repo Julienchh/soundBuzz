@@ -1,0 +1,58 @@
+doctype html
+html
+  head
+    title=title
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    link(rel="stylesheet" href='/style.css')
+  body
+
+    div.container
+      h2.js-active=`${users.length} joined`
+      ol.js-buzzes(style='overflow: scroll; max-height: 150px; overflow-x: hidden;')
+        each buzz in buzzes
+          li=`${buzz.name} on Team ${buzz.team}`
+      
+      <div class="c2" style="display: flex;">
+        <div class="sound-box" id="correct"><audio id="correct_sound" preload="auto" src="/sound/correct.mp3"></audio><img src="image/correct.png" alt="" width="50"><p>Correct</p></div>
+        <div class="sound-box" id="false"><audio id="false_sound" preload="auto" src="/sound/false.mp3"></audio><img src="image/false.png" alt="" width="50"><p>Faux</p></div>
+        button.js-clear='Clear buzzes'
+        <div id="play" class="sound-box" onclick="playSound()">
+            <img src="./image/play.png" alt="" width="50px">
+            <p>PLAY</p>
+        </div>
+
+        <div id="stop" class="sound-box" onclick="stopAllSounds()">
+            <img src="./image/false.png" alt="" width="50px">
+            <p>STOP SOUNDS</p>
+        </div>
+      </div>
+
+    <div class="navbar"></div>
+
+    <h1 id="num_played">0</h1>
+
+    <div class="container_sound"></div>
+
+    <div class="c2" style="display: flex;">
+        <div id="stop" class="sound-box" onclick="stopAllSounds()">
+            <img src="./image/false.png" alt="" width="50px">
+            <p>STOP SOUNDS</p>
+        </div>
+
+        <div id="play" class="sound-box" onclick="playSound()">
+            <img src="./image/play.png" alt="" width="50px">
+            <p>PLAY</p>
+        </div>
+
+        <div id="pause" class="sound-box" onclick="pauseSound()">
+            <img src="./image/pause.png" alt="" width="50px">
+            <p>PAUSE</p>
+        </div>
+
+
+      
+
+      
+
+    script(src='/socket.io/socket.io.js')
+    script(src='/host.js')
