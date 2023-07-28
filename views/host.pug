@@ -7,25 +7,39 @@ html
   body
 
     div.container
-      h2.js-active=`${users.length} joined`
+      h3.js-active=`Buzz :`
       ol.js-buzzes(style='overflow: scroll; max-height: 150px; overflow-x: hidden;')
-        each buzz in buzzes
-          li=`${buzz.name} on Team ${buzz.team}`
       
       <div class="c2" style="display: flex;">
-        <div class="sound-box" id="correct"><audio id="correct_sound" preload="auto" src="/sound/correct.mp3"></audio><img src="image/correct.png" alt="" width="50"><p>Correct</p></div>
-        <div class="sound-box" id="false"><audio id="false_sound" preload="auto" src="/sound/false.mp3"></audio><img src="image/false.png" alt="" width="50"><p>Faux</p></div>
+        <div class="sound-box" id="correct"><audio id="correct_sound" preload="auto" src="/sound/correct.mp3"></audio><img src="image/correct.png" alt="" width="25"><p>Correct</p></div>
+        <div class="sound-box" id="false"><audio id="false_sound" preload="auto" src="/sound/false.mp3"></audio><img src="image/false.png" alt="" width="25"><p>Faux</p></div>
         button.js-clear='Clear buzzes'
         <div id="play" class="sound-box" onclick="playSound()">
-            <img src="./image/play.png" alt="" width="50px">
+            <img src="./image/play.png" alt="" width="25px">
             <p>PLAY</p>
         </div>
 
         <div id="stop" class="sound-box" onclick="stopAllSounds()">
-            <img src="./image/false.png" alt="" width="50px">
+            <img src="./image/false.png" alt="" width="25px">
             <p>STOP SOUNDS</p>
         </div>
       </div>
+
+      <div class="c2" style="display: flex;">
+        <div class="sound-box" id="correct" onclick="addPoints(1)"><img src="image/correct.png" alt="" width="25"><p>+1 Point</p></div>
+        <div class="sound-box" id="correct" onclick="addPoints(2)"><img src="image/correct.png" alt="" width="25"><p>+2 Points</p></div>
+        <div class="sound-box" id="false" onclick="addBonusPoints(1)"><img src="image/correct.png" alt="" width="25"><p>+1 Bonus</p></div>
+        <div class="sound-box" id="false" onclick="addPoints(-1)"><img src="image/false.png" alt="" width="25"><p>-1 Point</p></div>
+        <div class="sound-box" id="false" onclick="addPoints(0)"><img src="image/next" alt="" width="25"><p>Passer</p></div>
+
+      </div>
+
+    table.score_table(id="scoreboard")
+      thead
+        tr
+          th Team
+          th Score
+      tbody
 
     <div class="navbar"></div>
 
@@ -35,17 +49,17 @@ html
 
     <div class="c2" style="display: flex;">
         <div id="stop" class="sound-box" onclick="stopAllSounds()">
-            <img src="./image/false.png" alt="" width="50px">
+            <img src="./image/false.png" alt="" width="25px">
             <p>STOP SOUNDS</p>
         </div>
 
         <div id="play" class="sound-box" onclick="playSound()">
-            <img src="./image/play.png" alt="" width="50px">
+            <img src="./image/play.png" alt="" width="25px">
             <p>PLAY</p>
         </div>
 
         <div id="pause" class="sound-box" onclick="pauseSound()">
-            <img src="./image/pause.png" alt="" width="50px">
+            <img src="./image/pause.png" alt="" width="25px">
             <p>PAUSE</p>
         </div>
 

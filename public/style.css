@@ -6,6 +6,11 @@ html {
   height: 100%;
 }
 
+td, tr, th {
+  border: 1px solid black;
+  padding: 5px;
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -18,16 +23,17 @@ body {
 
 .container_sound {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
   justify-items: center;
-  width: 80%;
+  width: 90%;
   margin-bottom: 20px;
 }
 
 .sound-box {
-  min-width: 150px;
-  min-height: 100px;
+  min-width: 100px;
+  min-height: 75px;
+  font-size: small;
   margin: 10px;
   padding: 10px;
   display: flex;
@@ -66,6 +72,10 @@ body {
   background-color: rgb(195, 195, 195);
 }
 
+.js-clear {
+  max-width: 200px;
+}
+
 body,
 input,
 button {
@@ -102,6 +112,12 @@ header {
   padding: 1em;
   float: right;
 }
+
+.c2 {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .view button:last-child {
   margin-bottom: 0;
 }

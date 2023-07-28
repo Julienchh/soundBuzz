@@ -3,25 +3,39 @@ const active = document.querySelector('.js-active')
 const buzzList = document.querySelector('.js-buzzes')
 const clear = document.querySelector('.js-clear')
 
-socket.on('active', (numberActive) => {
+/* socket.on('active', (numberActive) => {
   active.innerText = `${numberActive} joined`
-})
+}) */
 
 socket.on('buzzes', (buzzes) => {
   buzzList.innerHTML = buzzes
     .map(buzz => {
       const p = buzz.split('-')
-      return { name: p[0], team: p[1] }
+      return { team: p[0] }
     })
-    .map(user => `<li>${user.name} on Team ${user.team}</li>`)
+    .map(user => `<li>${user.team}</li>`)
     .join('')
   pauseSound();
+})
+
+// on join add user team to the tab if not already there
+socket.on('join', (user) => {
+  const tab = document.getElementById("scoreboard");
+  // check if team is already in the tab
+  if (document.getElementById(user.team) == null) {
+    // add team to the tab
+    const tr = document.createElement("tr");
+    tr.setAttribute("id", user.team);
+    tr.innerHTML = `<td>${user.team}</td><td id="${user.team}-score">0</td>`;
+    tab.appendChild(tr);
+  }
 })
 
 clear.addEventListener('click', () => {
   socket.emit('clear')
 })
 
+socket.emit('clear')
 let currentSound = null; // This will hold the currently playing sound
 let lastSound = null; // This will hold the last played sound
 
@@ -216,7 +230,7 @@ function createSoundSet(sounds, setName) {
       let img = document.createElement("img");
       img.src = `image/${sounds[name]}.png`;
       img.alt = "";
-      img.width = 50;
+      img.width = 20;
       div.appendChild(img);
     }
 
@@ -254,6 +268,45 @@ function stopAllSounds() {
     audio.currentTime = 0;
   }
   currentSound = null;
+}
+
+function addBonusPoints(points) {
+  // Get the first element in the buzz list
+  let buzz = document.querySelector(".js-buzzes li:first-child");
+  // add points to the buzz-score element
+  let score = document.querySelector("#"+buzz.innerHTML+"-score");
+  score .innerHTML = parseInt(score.innerHTML) + points;
+  sortTable();
+  return buzz;
+}
+
+function addPoints(points) {
+  buzz = addBonusPoints(points);
+  buzz.remove();
+}
+
+// Keep table order by column score
+function sortTable() {
+  let table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("scoreboard");
+  switching = true;
+  while (switching) {
+    switching = false;
+    rows = table.rows;
+    for (i = 1; i < rows.length - 1; i++) {
+      shouldSwitch = false;
+      x = parseInt(rows[i].getElementsByTagName("td")[1].innerHTML);
+      y = parseInt(rows[i + 1].getElementsByTagName("td")[1].innerHTML);
+      if (x < y) {
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
 }
 
 correct = document.getElementById("correct")

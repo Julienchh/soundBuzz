@@ -16,8 +16,8 @@ let data = {
 const getData = () => ({
   users: [...data.users],
   buzzes: [...data.buzzes].map(b => {
-    const [ name, team ] = b.split('-')
-    return { name, team }
+    const [ team ] = b.split('-')
+    return { team }
   })
 })
 
@@ -31,13 +31,14 @@ io.on('connection', (socket) => {
   socket.on('join', (user) => {
     data.users.add(user.id)
     io.emit('active', [...data.users].length)
-    console.log(`${user.name} joined!`)
+    io.emit('join', user)
+    console.log(`${user.team} joined!`)
   })
 
   socket.on('buzz', (user) => {
-    data.buzzes.add(`${user.name}-${user.team}`)
+    data.buzzes.add(`${user.team}`)
     io.emit('buzzes', [...data.buzzes])
-    console.log(`${user.name} buzzed in!`)
+    console.log(`${user.team} buzzed in!`)
   })
 
   socket.on('clear', () => {
