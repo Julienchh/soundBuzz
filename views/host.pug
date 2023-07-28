@@ -11,26 +11,22 @@ html
       ol.js-buzzes(style='overflow: scroll; max-height: 150px; overflow-x: hidden;')
       
       <div class="c2" style="display: flex;">
-        <div class="sound-box" id="correct"><audio id="correct_sound" preload="auto" src="/sound/correct.mp3"></audio><img src="image/correct.png" alt="" width="25"><p>Correct</p></div>
-        <div class="sound-box" id="false"><audio id="false_sound" preload="auto" src="/sound/false.mp3"></audio><img src="image/false.png" alt="" width="25"><p>Faux</p></div>
+        <div class="sound-box" id="correct"><audio id="correct_sound" preload="auto" src="/sound/correct.mp3"></audio><img src="image/correct.png" alt="" width="40"></div>
+        <div class="sound-box" id="false"><audio id="false_sound" preload="auto" src="/sound/false.mp3"></audio><img src="image/false.png" alt="" width="40"></div>
         button.js-clear='Clear buzzes'
         <div id="play" class="sound-box" onclick="playSound()">
-            <img src="./image/play.png" alt="" width="25px">
-            <p>PLAY</p>
+            <img src="./image/play.png" alt="" width="40px">
         </div>
 
         <div id="stop" class="sound-box" onclick="stopAllSounds()">
-            <img src="./image/false.png" alt="" width="25px">
-            <p>STOP SOUNDS</p>
+            <img src="./image/stop.png" alt="" width="40px">
         </div>
       </div>
 
       <div class="c2" style="display: flex;">
-        <div class="sound-box" id="correct" onclick="addPoints(1)"><img src="image/correct.png" alt="" width="25"><p>+1 Point</p></div>
-        <div class="sound-box" id="correct" onclick="addPoints(2)"><img src="image/correct.png" alt="" width="25"><p>+2 Points</p></div>
-        <div class="sound-box" id="false" onclick="addBonusPoints(1)"><img src="image/correct.png" alt="" width="25"><p>+1 Bonus</p></div>
-        <div class="sound-box" id="false" onclick="addPoints(-1)"><img src="image/false.png" alt="" width="25"><p>-1 Point</p></div>
-        <div class="sound-box" id="false" onclick="addPoints(0)"><img src="image/next" alt="" width="25"><p>Passer</p></div>
+        <select name="equipe" id="team-select"></select>
+        <input type="number" id="points" name="points" min="0" max="100" value="0">
+        <div class="sound-box" id="false" onclick="addPoints()"><img src="image/plus.png" alt="" width="40"></div>
 
       </div>
 
@@ -49,18 +45,15 @@ html
 
     <div class="c2" style="display: flex;">
         <div id="stop" class="sound-box" onclick="stopAllSounds()">
-            <img src="./image/false.png" alt="" width="25px">
-            <p>STOP SOUNDS</p>
+            <img src="./image/stop.png" alt="" width="40px">
         </div>
 
         <div id="play" class="sound-box" onclick="playSound()">
-            <img src="./image/play.png" alt="" width="25px">
-            <p>PLAY</p>
+            <img src="./image/play.png" alt="" width="40px">
         </div>
 
         <div id="pause" class="sound-box" onclick="pauseSound()">
-            <img src="./image/pause.png" alt="" width="25px">
-            <p>PAUSE</p>
+            <img src="./image/pause.png" alt="" width="40px">
         </div>
 
 

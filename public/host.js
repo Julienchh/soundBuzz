@@ -2,6 +2,7 @@ const socket = io()
 const active = document.querySelector('.js-active')
 const buzzList = document.querySelector('.js-buzzes')
 const clear = document.querySelector('.js-clear')
+const selectTeam = document.querySelector('#team-select')
 
 /* socket.on('active', (numberActive) => {
   active.innerText = `${numberActive} joined`
@@ -14,6 +15,14 @@ socket.on('buzzes', (buzzes) => {
       return { team: p[0] }
     })
     .map(user => `<li>${user.team}</li>`)
+    .join('')
+
+    selectTeam.innerHTML = buzzes
+    .map(buzz => {
+      const p = buzz.split('-')
+      return { team: p[0] }
+    })
+    .map(user => `<option value="${user.team}">${user.team}</option>`)
     .join('')
   pauseSound();
 })
@@ -270,19 +279,18 @@ function stopAllSounds() {
   currentSound = null;
 }
 
-function addBonusPoints(points) {
+
+function addPoints() {
+  // Get selected ellement of the select with id team-select
+  let team = selectTeam.value;
+  // Get point number to add to the team from the input with id points
+  let points = parseInt(document.querySelector("#points").value);
   // Get the first element in the buzz list
-  let buzz = document.querySelector(".js-buzzes li:first-child");
   // add points to the buzz-score element
-  let score = document.querySelector("#"+buzz.innerHTML+"-score");
+  let score = document.querySelector("#"+team+"-score");
   score .innerHTML = parseInt(score.innerHTML) + points;
   sortTable();
-  return buzz;
-}
 
-function addPoints(points) {
-  buzz = addBonusPoints(points);
-  buzz.remove();
 }
 
 // Keep table order by column score
