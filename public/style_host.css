@@ -1,0 +1,168 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+td, tr, th {
+  border: 1px solid black;
+  padding: 5px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container_sound {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  width: 90%;
+  margin-bottom: 20px;
+}
+
+.sound-box {
+  min-width: 75px;
+  min-height: 75px;
+  font-size: large;
+  font-weight: bolder;
+}
+
+.js-clear {
+  max-width: 200px;
+  min-height: 75px;
+  border-radius: 10px;
+}
+
+.js-join {
+  width: 90%;
+}
+
+.js-buzzer {
+  width: 90%;
+  margin: 10px;
+}
+
+body,
+input,
+button {
+  font-size: 1em;
+}
+
+ol {
+  text-align: left;
+}
+
+li {
+  margin: 0.5em 0;
+}
+
+.hidden {
+  display: none;
+}
+
+header {
+  background-color: #fff;
+}
+
+.logo {
+  width: 100%;
+  max-width: 310px;
+  max-height: 120px;
+  padding: 1em 0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1000px;
+  text-align: center;
+  align-items: center;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+select {
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.c2 {
+  display: inline-block;
+  max-height: 100px;
+  margin: 20px;
+}
+
+.view button:last-child {
+  margin-bottom: 0;
+}
+
+.buzzer-mode {
+  background-color: rgb(16, 21, 78);
+  color: rgb(243, 175, 185);
+}
+
+input[type="text"],
+input[type="number"],
+button {
+  border-radius: 5px;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="number"] {
+  border: 1px solid #B8B8B8;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="text"]:active,
+input[type="number"]:active {
+  border-color: #2c4bff;
+  box-shadow: 0 0 0 3px #ABB7FF;
+  outline: none;
+}
+
+button {
+  font-size: 1.2em;
+  background-color: #161D99;
+  color: #fff;
+  cursor: pointer;
+  border: 0;
+  border-radius: 10px;
+}
+
+button:hover {
+  background-color: rgb(22, 29, 153);
+}
+
+button:active {
+  box-shadow: rgb(171, 183, 255) 0px 0px 0px 3px;
+  outline: 0px;
+  transform: translateY(  1px);
+}
+button:focus {
+  box-shadow: 0 0 0 3px #ABB7FF;
+}
+
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
+}

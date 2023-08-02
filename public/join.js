@@ -34,6 +34,12 @@ form.addEventListener('submit', (e) => {
 
 buzzer.addEventListener('click', (e) => {
   socket.emit('buzz', user)
+  buzzer.style.visibility = 'hidden'
+
+})
+
+socket.on('buzzable', () => {
+  buzzer.style.visibility = 'visible'
 })
 
 editInfo.addEventListener('click', () => {

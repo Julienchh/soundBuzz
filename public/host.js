@@ -24,6 +24,9 @@ socket.on('buzzes', (buzzes) => {
     })
     .map(user => `<option value="${user.team}">${user.team}</option>`)
     .join('')
+})
+
+socket.on('pause', () => {
   pauseSound();
 })
 
@@ -37,6 +40,26 @@ socket.on('join', (user) => {
     tr.setAttribute("id", user.team);
     tr.innerHTML = `<td>${user.team}</td><td id="${user.team}-score">0</td>`;
     tab.appendChild(tr);
+
+    // add team to the radio button
+    const radio = document.getElementById("double-team");
+    /*
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+  <label class="btn btn-outline-primary" for="btnradio1">Radio 1</label>
+   */
+    const input = document.createElement("input");
+    input.setAttribute("type", "radio");
+    input.className = "btn-check";
+    input.setAttribute("name", "btnradio");
+    input.setAttribute("id", user.team);
+    input.setAttribute("autocomplete", "off");
+    input.value = user.team;
+    radio.appendChild(input);
+    const label = document.createElement("label");
+    label.className = "btn btn-outline-primary";
+    label.setAttribute("for", user.team);
+    label.textContent = user.team;
+    radio.appendChild(label);
   }
 })
 
@@ -51,7 +74,8 @@ let lastSound = null; // This will hold the last played sound
 let soundSets = {
   "Effets": {
     "Ascenceur": "elevator",
-    "Générique": "theme",
+    "Générique ueeo": "ueeo",
+    "Générique npltdp": "npltdp",
     "Applause": "applause",
     "Question Suivante": "next",
     "Fail": "fail",
@@ -190,20 +214,66 @@ let soundSets = {
     "39 - La Kiffance": "instrumental/la_kiffance",
     "40 - Je veux": "instrumental/je_veux",
   },
-  "Manche 4": {
-    "Correct": "correct",
-    "Faux": "false",
-    "Fail": "fail",
-    "Dérapage": "drift",
-    "Anges": "angels",
+  "Ici et Maintenant": {
+    "1 - ": "ici/star_walking",
+    "2 - ": "ici/des_miliers_de_je_taime",
+    "3 - ": "ici/bande_organisee",
+    "4 - ": "ici/depasse",
+    "5 - ": "ici/creepin",
+    "6 - ": "ici/evidemment",
+    "7 - ": "ici/horizon",
+    "8 - ": "ici/bebeto",
+    "9 - ": "ici/cold_heart",
+    "10 - ": "ici/tout_va_bien",
+    "11 - ": "ici/la_fama",
+    "12 - ": "ici/la_goffa_lolita",
+    "13 - ": "ici/clic_clic_pan_pan",
+    "14 - ": "ici/et_bam",
+    "15 - ": "ici/coup_de_vieux",
+    "16 - ": "ici/despecha",
+    "17 - ": "ici/la_quete",
+    "18 - ": "ici/un_jour_je_marierai_un_ange",
+    "19 - ": "ici/unholy",
+    "20 - ": "ici/substitution",
+    "21 - ": "ici/love_me",
+    "22 - ": "ici/cite_de_france",
+    "23 - ": "ici/haut_niveau",
+    "24 - ": "ici/best_life",
+    "25 - ": "ici/jme_sens_bien",
+    "26 - ": "ici/a_peu_pres",
+    "27 - ": "ici/eurostar",
+    "28 - ": "ici/autobahn",
+    "29 - ": "ici/la_faille",
+    "30 - ": "ici/tchin_tchin",
+    "31 - ": "ici/bad_habits",
+    "32 - ": "ici/bruxelles_je_taime",
+    "33 - ": "ici/respire_encore",
+    "34 - ": "ici/lif",
+    "35 - ": "ici/lenfer",
+    "36 - ": "ici/fade_up",
+    "37 - ": "ici/bam_bam",
+    "38 - ": "ici/doudou",
+    "39 - ": "ici/dont_you_worry",
+    "40 - ": "ici/hold_my_hand",
+  },
+
+  "Bonus" : {
+    "Pookie - ": "bonus/pookie",
+    "La java de Broadway - ": "bonus/la_java_de_broadway",
+    "Hey Jude - ": "bonus/hey_jude",
+    "Jme voyais déjà - ": "bonus/jme_voyais_deja",
+    "Tous les cris les SOS - ": "bonus/tous_les_cris_les_sos",
+    "Angela - ": "bonus/angela",
+    "Etoile - ": "bonus/etoile",
+    "Theremine - ": "bonus/theremine",
   }
 
 };
 
-let navbar = document.querySelector(".navbar");
+let navbar = document.querySelector("#navbar");
 for (let setName in soundSets) {
   let link = document.createElement("a");
-  link.className = "navBtn"
+  link.className = "btn btn-outline-secondary m-2 btn-center h4"
   link.textContent = setName;
   link.addEventListener("click", function () {
     createSoundSet(soundSets[setName], setName);
@@ -221,9 +291,10 @@ function createSoundSet(sounds, setName) {
     // Creating the new div
     let div = document.createElement("div");
     div.appendChild(audio)
-    div.className = "sound-box";
+    div.className = "sound-box btn btn-outline-primary";
     div.id = sounds[name];
     div.addEventListener("click", function () {
+      socket.emit('clear')
       num = document.getElementById("num_played")
       num.innerHTML = this.getElementsByTagName("p")[0].innerHTML
       if (currentSound === audio) {
@@ -233,19 +304,22 @@ function createSoundSet(sounds, setName) {
         playSound(audio);
       }
     });
-
+    
+    // Creating the new paragraph
+    let p = document.createElement("p");
+    p.className = "h3"
+    p.textContent = name.split(" - ")[0];
+    
     // Creating the new img only if the name is Effets
     if (setName == "Effets") {
       let img = document.createElement("img");
       img.src = `image/${sounds[name]}.png`;
       img.alt = "";
       img.width = 20;
+      p.className = ""
       div.appendChild(img);
     }
 
-    // Creating the new paragraph
-    let p = document.createElement("p");
-    p.textContent = name.split(" - ")[0];
 
     // Appending the img and p to the div
     div.appendChild(p);
@@ -283,8 +357,13 @@ function stopAllSounds() {
 function addPoints() {
   // Get selected ellement of the select with id team-select
   let team = selectTeam.value;
-  // Get point number to add to the team from the input with id points
   let points = parseInt(document.querySelector("#points").value);
+
+  //if team is the one selected in the radio button
+  if (document.getElementById(team).checked) {
+    points = points * 2;
+  }
+  // Get point number to add to the team from the input with id points
   // Get the first element in the buzz list
   // add points to the buzz-score element
   let score = document.querySelector("#"+team+"-score");

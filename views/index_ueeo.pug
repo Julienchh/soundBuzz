@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    title=title
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:500,700|Roboto:400,500,700,900")
+    link(rel="stylesheet" href='/style_ueeo.css')
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  body.js-body
+    div.container
+      form.view.js-join
+        img(src="/image/ueeo.png" class="main-image")
+        h2="C'est Parti !"
+        input(type='text' name='team' placeholder='Equipe' required='required')
+        button(type='submit')='Join!'
+
+      div.view.js-joined.hidden
+        button.js-buzzer.buzzer()='Buzz'
+        p.js-joined-info=""
+        button.js-edit.secondary='Changer d\'équipe'
+
+    script(src='/socket.io/socket.io.js')
+    script(src='/join.js')
