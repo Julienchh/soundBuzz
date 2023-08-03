@@ -24,7 +24,8 @@ const getData = () => ({
 app.use(express.static('public'))
 app.set('view engine', 'pug')
 
-app.get('/', (req, res) => res.render('index', { title }))
+app.get('/ueeo', (req, res) => res.render('index_ueeo', { title }))
+app.get('/npltdp', (req, res) => res.render('index_npltdp', { title }))
 app.get('/host', (req, res) => res.render('host', Object.assign({ title }, getData())))
 
 io.on('connection', (socket) => {
@@ -38,12 +39,14 @@ io.on('connection', (socket) => {
   socket.on('buzz', (user) => {
     data.buzzes.add(`${user.team}`)
     io.emit('buzzes', [...data.buzzes])
+    io.emit('pause', null)
     console.log(`${user.team} buzzed in!`)
   })
 
   socket.on('clear', () => {
     data.buzzes = new Set()
     io.emit('buzzes', [...data.buzzes])
+    io.emit('buzzable', null)
     console.log(`Clear buzzes`)
   })
 })
