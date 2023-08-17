@@ -17,13 +17,13 @@ socket.on('buzzes', (buzzes) => {
     .map(user => `<li>${user.team}</li>`)
     .join('')
 
-    selectTeam.innerHTML = buzzes
-    .map(buzz => {
-      const p = buzz.split('-')
-      return { team: p[0] }
-    })
-    .map(user => `<option value="${user.team}">${user.team}</option>`)
-    .join('')
+  // selectTeam.innerHTML = buzzes
+  //   .map(buzz => {
+  //     const p = buzz.split('-')
+  //     return { team: p[0] }
+  //   })
+  //   .map(user => `<option value="${user.team}">${user.team}</option>`)
+  //   .join('')
 })
 
 socket.on('pause', () => {
@@ -43,10 +43,6 @@ socket.on('join', (user) => {
 
     // add team to the radio button
     const radio = document.getElementById("double-team");
-    /*
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-  <label class="btn btn-outline-primary" for="btnradio1">Radio 1</label>
-   */
     const input = document.createElement("input");
     input.setAttribute("type", "radio");
     input.className = "btn-check";
@@ -60,6 +56,12 @@ socket.on('join', (user) => {
     label.setAttribute("for", user.team);
     label.textContent = user.team;
     radio.appendChild(label);
+
+    // add team to the select
+    const option = document.createElement("option");
+    option.value = user.team;
+    option.textContent = user.team;
+    selectTeam.appendChild(option);
   }
 })
 
@@ -257,7 +259,7 @@ let soundSets = {
     "40 - ": "ici/hold_my_hand",
   },
 
-  "Bonus" : {
+  "Bonus": {
     "Pookie - ": "bonus/pookie",
     "La java de Broadway - ": "bonus/la_java_de_broadway",
     "Hey Jude - ": "bonus/hey_jude",
@@ -304,12 +306,12 @@ function createSoundSet(sounds, setName) {
         playSound(audio);
       }
     });
-    
+
     // Creating the new paragraph
     let p = document.createElement("p");
     p.className = "h3"
     p.textContent = name.split(" - ")[0];
-    
+
     // Creating the new img only if the name is Effets
     if (setName == "Effets") {
       let img = document.createElement("img");
@@ -353,6 +355,14 @@ function stopAllSounds() {
   currentSound = null;
 }
 
+// add event listener to the points so that if we push enter it adds the points
+document.querySelector("#points").addEventListener("keyup", function (event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    addPoints();
+  }
+});
+
 
 function addPoints() {
   // Get selected ellement of the select with id team-select
@@ -360,14 +370,14 @@ function addPoints() {
   let points = parseInt(document.querySelector("#points").value);
 
   //if team is the one selected in the radio button
-  if (document.getElementById(team).checked) {
+  if (document.getElementById(team).checked && points > 0) {
     points = points * 2;
   }
   // Get point number to add to the team from the input with id points
   // Get the first element in the buzz list
   // add points to the buzz-score element
-  let score = document.querySelector("#"+team+"-score");
-  score .innerHTML = parseInt(score.innerHTML) + points;
+  let score = document.querySelector("#" + team + "-score");
+  score.innerHTML = parseInt(score.innerHTML) + points;
   sortTable();
 
 }
