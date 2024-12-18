@@ -26,6 +26,7 @@ app.set('view engine', 'pug')
 
 app.get('/ueeo', (req, res) => res.render('index_ueeo', { title }))
 app.get('/npltdp', (req, res) => res.render('index_npltdp', { title }))
+app.get('/qvgdc', (req, res) => res.render('index_qvgdc', { title }))
 app.get('/host', (req, res) => res.render('host', Object.assign({ title }, getData())))
 
 io.on('connection', (socket) => {
@@ -37,7 +38,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on('buzz', (user) => {
-    data.buzzes.add(`${user.team}`)
+    data.buzzes.add(`${user.team}-${user.buzzerText}`)
     io.emit('buzzes', [...data.buzzes])
     io.emit('pause', null)
     console.log(`${user.team} buzzed in!`)

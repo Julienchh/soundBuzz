@@ -2,7 +2,7 @@ const socket = io()
 const body = document.querySelector('.js-body')
 const form = document.querySelector('.js-join')
 const joined = document.querySelector('.js-joined')
-const buzzer = document.querySelector('.js-buzzer')
+const buzzers = document.querySelectorAll('.js-buzzer')
 const joinedInfo = document.querySelector('.js-joined-info')
 const editInfo = document.querySelector('.js-edit')
 
@@ -32,14 +32,20 @@ form.addEventListener('submit', (e) => {
   body.classList.add('buzzer-mode')
 })
 
-buzzer.addEventListener('click', (e) => {
-  socket.emit('buzz', user)
-  buzzer.style.visibility = 'hidden'
-
+buzzers.forEach(buzzer => {
+  buzzer.addEventListener('click', (e) => {
+    const buzzerText = buzzer.textContent; // Capture the text inside the buzzer button
+    socket.emit('buzz', { ...user, buzzerText }); // Emit the text content along with the user information
+    buzzers.forEach(b => {
+      b.style.visibility = 'hidden';
+    });
+  })
 })
 
 socket.on('buzzable', () => {
-  buzzer.style.visibility = 'visible'
+  buzzers.forEach(buzzer => {
+    buzzer.style.visibility = 'visible';
+  })
 })
 
 editInfo.addEventListener('click', () => {

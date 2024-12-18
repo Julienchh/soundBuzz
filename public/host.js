@@ -8,22 +8,15 @@ const selectTeam = document.querySelector('#team-select')
   active.innerText = `${numberActive} joined`
 }) */
 
-socket.on('buzzes', (buzzes) => {
-  buzzList.innerHTML = buzzes
-    .map(buzz => {
-      const p = buzz.split('-')
-      return { team: p[0] }
-    })
-    .map(user => `<li>${user.team}</li>`)
-    .join('')
-
-  // selectTeam.innerHTML = buzzes
-  //   .map(buzz => {
-  //     const p = buzz.split('-')
-  //     return { team: p[0] }
-  //   })
-  //   .map(user => `<option value="${user.team}">${user.team}</option>`)
-  //   .join('')
+  socket.on('buzzes', (buzzes) => {
+    console.log(buzzes)
+    buzzList.innerHTML = buzzes
+      .map(buzz => {
+        const p = buzz.split('-')
+        return { team: p[0], buzzerText: p[1] } // Include the buzzer text content
+      })
+      .map(user => `<li>${user.team} - ${user.buzzerText}</li>`) // Display the buzzer text content
+      .join('')
 })
 
 socket.on('pause', () => {
