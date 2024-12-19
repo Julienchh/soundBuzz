@@ -1,31 +1,67 @@
-const socket = io()
-const active = document.querySelector('.js-active')
-const buzzList = document.querySelector('.js-buzzes')
-const clear = document.querySelector('.js-clear')
-const selectTeam = document.querySelector('#team-select')
+const socket = io();
+const active = document.querySelector('.js-active');
+const buzzList = document.querySelector('.js-buzzes');
+const clear = document.querySelector('.js-clear');
+const selectTeam = document.querySelector('#team-select');
+
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let currentSoundBuffer = null;
+let currentSoundSource = null;
+let nextSoundSource = null;
+let teamPointsDiv = document.getElementById("teamPoints");
+let currentGainNode = audioContext.createGain();
+let nextGainNode = audioContext.createGain();
+currentGainNode.connect(audioContext.destination);
+nextGainNode.connect(audioContext.destination);
 
 /* socket.on('active', (numberActive) => {
   active.innerText = `${numberActive} joined`
 }) */
 
-  socket.on('buzzes', (buzzes) => {
-    console.log(buzzes)
-    buzzList.innerHTML = buzzes
-      .map(buzz => {
-        const p = buzz.split('-')
-        return { team: p[0], buzzerText: p[1] } // Include the buzzer text content
-      })
-      .map(user => `<li>${user.team} - ${user.buzzerText}</li>`) // Display the buzzer text content
-      .join('')
-})
+socket.on('buzzes', (buzzes) => {
+  console.log(buzzes);
+  buzzList.innerHTML = buzzes
+    .map(buzz => {
+      const p = buzz.split('-');
+      return { team: p[0], buzzerText: p[1] }; // Include the buzzer text content
+    })
+    .map(user => `<li>${user.team} - ${user.buzzerText}</li>`) // Display the buzzer text content
+    .join('');
+    // for each buzz in the buzzes list, Compute the percentage of different buzzerText per team and display it in the teamPointsDiv
+    teamPoints = {};
+    buzzes.forEach(buzz => {
+      const [team, buzzerText] = buzz.split('-');
+      if (!teamPoints[team]) {
+        teamPoints[team] = {};
+      }
+      if (!teamPoints[team][buzzerText]) {
+        teamPoints[team][buzzerText] = 0;
+      }
+      teamPoints[team][buzzerText]++;
+    });
+    teamPointsDiv.innerHTML = '';
+    for (const team in teamPoints) {
+      const teamDiv = document.createElement('div');
+      teamDiv.innerHTML = `<h2>${team}</h2>`;
+      for (const buzzerText in teamPoints[team]) {
+        // Number of buzzes for the team to make a percentage of each buzzerText for the team
+        const total = Object.values(teamPoints[team]).reduce((acc, curr) => acc + curr);
+        const percentage = (teamPoints[team][buzzerText] / total) * 100;
+        const buzzerTextDiv = document.createElement('div');
+        buzzerTextDiv.innerHTML = `<p>${buzzerText}: ${percentage.toFixed(2)}%</p>`;
+        teamDiv.appendChild(buzzerTextDiv);
+    }
+    teamPointsDiv.appendChild(teamDiv);
+  }
+});
 
 socket.on('pause', () => {
   pauseSound();
-})
+});
 
 // on join add user team to the tab if not already there
 socket.on('join', (user) => {
-  const tab = document.getElementById("scoreboard");
+  /*const tab = document.getElementById("scoreboard");
   // check if team is already in the tab
   if (document.getElementById(user.team) == null) {
     // add team to the tab
@@ -55,16 +91,14 @@ socket.on('join', (user) => {
     option.value = user.team;
     option.textContent = user.team;
     selectTeam.appendChild(option);
-  }
-})
+  }*/
+});
 
 clear.addEventListener('click', () => {
-  socket.emit('clear')
-})
+  socket.emit('clear');
+});
 
-socket.emit('clear')
-let currentSound = null; // This will hold the currently playing sound
-let lastSound = null; // This will hold the last played sound
+socket.emit('clear');
 
 let soundSets = {
   "Effets": {
@@ -121,8 +155,6 @@ let soundSets = {
     "38 - Blinding Lights": "medieval/blinding_lights",
     "39 - Y.M.C.A.": "medieval/ymca",
     "40 - Never Gonna Give You Up": "medieval/never_gonna_give_you_up",
-
-
   },
   "80s": {
     "1 - Sweet but Psycho": "80s/sweet_but_psycho",
@@ -165,7 +197,6 @@ let soundSets = {
     "38 - Le bal masqué": "80s/le_bal_masque",
     "39 - La tribu de dana": "80s/la_tribu_de_dana",
     "40 - Flowers": "80s/flowers",
-
   },
   "Instrumental": {
     "1 - Bad Guy": "instrumental/bad_guy",
@@ -251,7 +282,6 @@ let soundSets = {
     "39 - ": "ici/dont_you_worry",
     "40 - ": "ici/hold_my_hand",
   },
-
   "Bonus": {
     "Pookie - ": "bonus/pookie",
     "La java de Broadway - ": "bonus/la_java_de_broadway",
@@ -261,14 +291,20 @@ let soundSets = {
     "Angela - ": "bonus/angela",
     "Etoile - ": "bonus/etoile",
     "Theremine - ": "bonus/theremine",
+  },
+  "Chiffons": {
+    "Openning loop": "chiffons/openning_loop",
+    "Openning": "chiffons/openning",
+    "Explain loop": "chiffons/explain_game",
+    "Let's play Easy": "chiffons/play_2000",
+    "Think Easy": "chiffons/think_2000"
   }
-
 };
 
 let navbar = document.querySelector("#navbar");
 for (let setName in soundSets) {
   let link = document.createElement("a");
-  link.className = "btn btn-outline-secondary m-2 btn-center h4"
+  link.className = "btn btn-outline-secondary m-2 btn-center h4";
   link.textContent = setName;
   link.addEventListener("click", function () {
     createSoundSet(soundSets[setName], setName);
@@ -285,24 +321,24 @@ function createSoundSet(sounds, setName) {
 
     // Creating the new div
     let div = document.createElement("div");
-    div.appendChild(audio)
+    div.appendChild(audio);
     div.className = "sound-box btn btn-outline-primary";
     div.id = sounds[name];
     div.addEventListener("click", function () {
-      socket.emit('clear')
-      num = document.getElementById("num_played")
-      num.innerHTML = this.getElementsByTagName("p")[0].innerHTML
-      if (currentSound === audio) {
+      socket.emit('clear');
+      num = document.getElementById("num_played");
+      num.innerHTML = this.getElementsByTagName("p")[0].innerHTML;
+      if (currentSoundSource === audio) {
         pauseSound();
       } else {
-        stopAllSounds();
-        playSound(audio);
+        //stopAllSounds();
+        playSoundWithCrossfade(`/sound/${sounds[name]}.mp3`);
       }
     });
 
     // Creating the new paragraph
     let p = document.createElement("p");
-    p.className = "h3"
+    p.className = "h3";
     p.textContent = name.split(" - ")[0];
 
     // Creating the new img only if the name is Effets
@@ -311,10 +347,9 @@ function createSoundSet(sounds, setName) {
       img.src = `image/${sounds[name]}.png`;
       img.alt = "";
       img.width = 20;
-      p.className = ""
+      p.className = "";
       div.appendChild(img);
     }
-
 
     // Appending the img and p to the div
     div.appendChild(p);
@@ -324,28 +359,59 @@ function createSoundSet(sounds, setName) {
   }
 }
 
-function playSound(sound = lastSound) {
-  if (sound) {
-    currentSound = sound;
-    lastSound = sound;
-    currentSound.volume = 1;
-    currentSound.play();
-  }
+function loadSound(url) {
+  return fetch(url)
+    .then(response => response.arrayBuffer())
+    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+    .then(audioBuffer => {
+      currentSoundBuffer = audioBuffer;
+    });
+}
+
+function playSoundWithCrossfade(url) {
+  loadSound(url).then(() => {
+    if (currentSoundBuffer) {
+      nextSoundSource = audioContext.createBufferSource();
+      nextSoundSource.buffer = currentSoundBuffer;
+      nextSoundSource.connect(nextGainNode);
+      nextSoundSource.start(0);
+
+      // Fade-out current sound
+      if (currentSoundSource) {
+        currentGainNode.gain.setValueAtTime(currentGainNode.gain.value, audioContext.currentTime);
+        currentGainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.5); // 0.5 seconds fade-out
+        currentSoundSource.stop(audioContext.currentTime + 0.5);
+      }
+
+      // Fade-in next sound
+      nextGainNode.gain.setValueAtTime(0, audioContext.currentTime);
+      nextGainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime + 0.5); // 0.5 seconds fade-in
+
+      // Update current sound source and gain node
+      currentSoundSource = nextSoundSource;
+      currentGainNode = nextGainNode;
+      nextSoundSource = null;
+      nextGainNode = audioContext.createGain();
+      nextGainNode.connect(audioContext.destination);
+    }
+  });
 }
 
 function pauseSound() {
-  if (currentSound) {
-    currentSound.pause();
+  if (currentSoundSource) {
+    currentSoundSource.pause();
   }
 }
 
 function stopAllSounds() {
-  let audios = document.querySelectorAll("audio");
-  for (let audio of audios) {
-    audio.pause();
-    audio.currentTime = 0;
+  if (currentSoundSource) {
+    currentSoundSource.stop();
   }
-  currentSound = null;
+  if (nextSoundSource) {
+    nextSoundSource.stop();
+  }
+  currentSoundSource = null;
+  nextSoundSource = null;
 }
 
 // add event listener to the points so that if we push enter it adds the points
@@ -356,9 +422,8 @@ document.querySelector("#points").addEventListener("keyup", function (event) {
   }
 });
 
-
 function addPoints() {
-  // Get selected ellement of the select with id team-select
+  // Get selected element of the select with id team-select
   let team = selectTeam.value;
   let points = parseInt(document.querySelector("#points").value);
 
@@ -372,7 +437,6 @@ function addPoints() {
   let score = document.querySelector("#" + team + "-score");
   score.innerHTML = parseInt(score.innerHTML) + points;
   sortTable();
-
 }
 
 // Keep table order by column score
@@ -399,16 +463,14 @@ function sortTable() {
   }
 }
 
-correct = document.getElementById("correct")
+correct = document.getElementById("correct");
 correct.addEventListener("click", function () {
   stopAllSounds();
-  playSound(document.getElementById("correct_sound"));
-}
-);
-false_sound = document.getElementById("false")
+  playSoundWithCrossfade('/sound/correct.mp3');
+});
+
+false_sound = document.getElementById("false");
 false_sound.addEventListener("click", function () {
   stopAllSounds();
-  playSound(document.getElementById("false_sound"));
-}
-);
-
+  playSoundWithCrossfade('/sound/false.mp3');
+});

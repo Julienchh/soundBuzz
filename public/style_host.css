@@ -23,7 +23,7 @@ body {
 
 .container_sound {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: 20px;
   justify-items: center;
   width: 90%;
@@ -81,9 +81,8 @@ header {
   padding: 1em 0;
 }
 
-.container {
+.main-content {
   width: 90%;
-  max-width: 1000px;
   text-align: center;
   align-items: center;
   padding: 1em;
@@ -166,3 +165,80 @@ button:focus {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
 }
+
+
+#teamPoints {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap if the container is too narrow */
+  gap: 20px; /* Add space between each team section */
+  margin: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9; /* Light background for better readability */
+  border-radius: 8px; /* Rounded corners */
+}
+
+#teamPoints > div {
+  min-width: 250px; /* Minimum width for smaller screens */
+  background-color: #ffffff; /* Background for each team section */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+#teamPoints h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #333;
+  border-bottom: 2px solid #007bff; /* Underline the team name */
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+#teamPoints div p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.container-fluid {
+  display: flex;
+  height: 100vh;
+}
+
+.buzz-list-container {
+  width: 300px; /* Adjust the width as needed */
+  overflow-y: scroll;
+  background-color: #f8f9fa; /* Optional: Add a background color */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.buzz-list-container h3 {
+  margin-bottom: 20px;
+}
+
+.js-buzzes {
+  list-style-type: decimal; /* Numbered list */
+  padding-left: 20px; /* Indent for numbered list */
+}
+
+.js-buzzes li {
+  width: 100%; /* Ensure each list item takes the full width */
+  padding: 5px; /* Adjust padding as needed */
+  margin-bottom: 5px; /* Optional: Add space between list items */
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  box-sizing: border-box;
+}
+

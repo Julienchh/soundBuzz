@@ -10,7 +10,7 @@ const title = 'Buffer Buzzer'
 
 let data = {
   users: new Set(),
-  buzzes: new Set(),
+  buzzes: new Array(),
 }
 
 const getData = () => ({
@@ -38,14 +38,14 @@ io.on('connection', (socket) => {
   })
 
   socket.on('buzz', (user) => {
-    data.buzzes.add(`${user.team}-${user.buzzerText}`)
+    data.buzzes.push(`${user.team}-${user.buzzerText}`)
     io.emit('buzzes', [...data.buzzes])
     io.emit('pause', null)
     console.log(`${user.team} buzzed in!`)
   })
 
   socket.on('clear', () => {
-    data.buzzes = new Set()
+    data.buzzes = new Array()
     io.emit('buzzes', [...data.buzzes])
     io.emit('buzzable', null)
     console.log(`Clear buzzes`)
