@@ -3,6 +3,7 @@ const body = document.querySelector('.js-body')
 const form = document.querySelector('.js-join')
 const joined = document.querySelector('.js-joined')
 const buzzers = document.querySelectorAll('.js-buzzer')
+const buzzers_npltdp = document.querySelectorAll('.js-buzzer-npltdp')
 const joinedInfo = document.querySelector('.js-joined-info')
 const editInfo = document.querySelector('.js-edit')
 
@@ -42,8 +43,21 @@ buzzers.forEach(buzzer => {
   })
 })
 
+buzzers_npltdp.forEach(buzzer => {
+  buzzer.addEventListener('click', (e) => {
+    const buzzerText = buzzer.textContent; // Capture the text inside the buzzer button
+    socket.emit('buzz_npltdp', { ...user, buzzerText }); // Emit the text content along with the user information
+    buzzers_npltdp.forEach(b => {
+      b.style.visibility = 'hidden';
+    });
+  })
+})
+
 socket.on('buzzable', () => {
   buzzers.forEach(buzzer => {
+    buzzer.style.visibility = 'visible';
+  })
+  buzzers_npltdp.forEach(buzzer => {
     buzzer.style.visibility = 'visible';
   })
 })

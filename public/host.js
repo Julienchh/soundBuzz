@@ -59,6 +59,10 @@ socket.on('pause', () => {
   pauseSound();
 });
 
+socket.on('stop', () => {
+  stopAllSounds();
+});
+
 // on join add user team to the tab if not already there
 socket.on('join', (user) => {
   /*const tab = document.getElementById("scoreboard");
@@ -296,8 +300,12 @@ let soundSets = {
     "Openning loop": "chiffons/openning_loop",
     "Openning": "chiffons/openning",
     "Explain loop": "chiffons/explain_game",
-    "Let's play Easy": "chiffons/play_2000",
-    "Think Easy": "chiffons/think_2000"
+    "Explain End": "chiffons/end_explain",
+    "Let's play": "chiffons/play",
+    "Think Easy": "chiffons/think_easy",
+    "Think Hard": "chiffons/think_hard",
+    "Last Word": "chiffons/last_word",
+    "One Winner": "chiffons/one_winner",
   }
 };
 
@@ -328,11 +336,16 @@ function createSoundSet(sounds, setName) {
       socket.emit('clear');
       num = document.getElementById("num_played");
       num.innerHTML = this.getElementsByTagName("p")[0].innerHTML;
+      console.log(setName)
       if (currentSoundSource === audio) {
         pauseSound();
-      } else {
-        //stopAllSounds();
+      } else if(setName != "Chiffons"){
+        stopAllSounds();
         playSoundWithCrossfade(`/sound/${sounds[name]}.mp3`);
+        playSound();
+      } else {
+        playSoundWithCrossfade(`/sound/${sounds[name]}.mp3`);
+        playSound();
       }
     });
 
@@ -398,8 +411,14 @@ function playSoundWithCrossfade(url) {
 }
 
 function pauseSound() {
-  if (currentSoundSource) {
-    currentSoundSource.pause();
+  if (audioContext.state === 'running') {
+    audioContext.suspend();
+  }
+}
+
+function playSound() {
+  if (audioContext.state === 'suspended') {
+    audioContext.resume();
   }
 }
 

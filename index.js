@@ -40,6 +40,13 @@ io.on('connection', (socket) => {
   socket.on('buzz', (user) => {
     data.buzzes.push(`${user.team}-${user.buzzerText}`)
     io.emit('buzzes', [...data.buzzes])
+    //io.emit('pause', null)
+    console.log(`${user.team} buzzed in!`)
+  })
+
+  socket.on('buzz_npltdp', (user) => {
+    data.buzzes.push(`${user.team}-${user.buzzerText}`)
+    io.emit('buzzes', [...data.buzzes])
     io.emit('pause', null)
     console.log(`${user.team} buzzed in!`)
   })
