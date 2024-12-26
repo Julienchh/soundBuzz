@@ -306,6 +306,8 @@ let soundSets = {
     "Think Hard": "chiffons/think_hard",
     "Last Word": "chiffons/last_word",
     "One Winner": "chiffons/one_winner",
+    "Two Winners": "chiffons/two_winner",
+    "Looser": "chiffons/lost",
   }
 };
 
@@ -432,14 +434,6 @@ function stopAllSounds() {
   currentSoundSource = null;
   nextSoundSource = null;
 }
-
-// add event listener to the points so that if we push enter it adds the points
-document.querySelector("#points").addEventListener("keyup", function (event) {
-  if (event.keyCode === 13) {
-    event.preventDefault();
-    addPoints();
-  }
-});
 
 function addPoints() {
   // Get selected element of the select with id team-select
