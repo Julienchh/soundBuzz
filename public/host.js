@@ -308,6 +308,10 @@ let soundSets = {
     "One Winner": "chiffons/one_winner",
     "Two Winners": "chiffons/two_winner",
     "Looser": "chiffons/lost",
+    "Phone Call": "chiffons/phone_call",
+    "Phone Question": "chiffons/phone_question",
+    "50 50": "chiffons/50_50",
+    "Bank": "chiffons/bank",
   }
 };
 
