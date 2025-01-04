@@ -1,6 +1,7 @@
 const http = require('http')
 const express = require('express')
 const socketio = require('socket.io')
+const os = require('os');
 
 const app = express();
 const server = http.Server(app);
@@ -59,4 +60,25 @@ io.on('connection', (socket) => {
   })
 })
 
-server.listen(8090, () => console.log('Listening on 8090'))
+// Get local IPv4 address
+const getLocalIPv4 = () => {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal && name==="Wi-Fi") {
+        return iface.address;
+      }
+    }
+  }
+  return 'localhost';
+};
+
+const PORT = 8090;
+
+server.listen(PORT, () => {
+  const localIP = getLocalIPv4();
+  console.log(`UEEO :  http://${localIP}:${PORT}/ueeo`);
+  console.log(`NPLTDP :  http://${localIP}:${PORT}/npltdp`);
+  console.log(`QVGDC :  http://${localIP}:${PORT}/qvgdc`);
+  console.log(`HOST : http://localhost:${PORT}/host`);
+});
