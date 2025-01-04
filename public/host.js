@@ -43,9 +43,12 @@ socket.on('buzzes', (buzzes) => {
     for (const team in teamPoints) {
       const teamDiv = document.createElement('div');
       teamDiv.innerHTML = `<h2>${team}</h2>`;
+      const total = Object.values(teamPoints[team]).reduce((acc, curr) => acc + curr);
+      const numBuzz = document.createElement('div');
+      numBuzz.innerHTML = `<p>${total}</p>`;
+      teamDiv.appendChild(numBuzz);
       for (const buzzerText in teamPoints[team]) {
         // Number of buzzes for the team to make a percentage of each buzzerText for the team
-        const total = Object.values(teamPoints[team]).reduce((acc, curr) => acc + curr);
         const percentage = (teamPoints[team][buzzerText] / total) * 100;
         const buzzerTextDiv = document.createElement('div');
         buzzerTextDiv.innerHTML = `<p>${buzzerText}: ${percentage.toFixed(2)}%</p>`;
@@ -338,11 +341,13 @@ function createSoundSet(sounds, setName) {
     div.appendChild(audio);
     div.className = "sound-box btn btn-outline-primary";
     div.id = sounds[name];
+    console.log(setName)
     div.addEventListener("click", function () {
-      socket.emit('clear');
+      if (setName != "Effets" && setName != "Chiffons" && setName != "Bonus") {
+        socket.emit('clear');
+      }
       num = document.getElementById("num_played");
       num.innerHTML = this.getElementsByTagName("p")[0].innerHTML;
-      console.log(setName)
       if (currentSoundSource === audio) {
         pauseSound();
       } else if(setName != "Chiffons"){
@@ -484,10 +489,12 @@ correct = document.getElementById("correct");
 correct.addEventListener("click", function () {
   stopAllSounds();
   playSoundWithCrossfade('/sound/correct.mp3');
+  playSound();
 });
 
 false_sound = document.getElementById("false");
 false_sound.addEventListener("click", function () {
   stopAllSounds();
   playSoundWithCrossfade('/sound/false.mp3');
+  playSound();
 });
