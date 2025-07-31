@@ -5,14 +5,18 @@ html
     meta(name='viewport' content='width=device-width, initial-scale=1')
     link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:500,700|Roboto:400,500,700,900")
     link(rel="stylesheet" href='/style_qvgdc.css')
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous")
   body.js-body
     div.container
       form.view.js-join
         img(src="/image/qvgdc.png" class="main-image")
         h2="C'est Parti !"
-        input(type='text' name='team' placeholder='Equipe' required='required')
-        button(type='submit')='Join!'
+        p="Choisis ton équipe :"
+        select(name="team" class="form-select form-select-lg mb-3 text-center" required)
+          option(value="" disabled selected hidden) Sélectionne une équipe
+          option(value="orange") Équipe Orange
+          option(value="bleue") Équipe Bleue
+        button(type='submit' class='btn btn-primary btn-lg w-100 mt-2') Rejoindre
 
       div.view.js-joined.hidden
         div.buzzer-grid

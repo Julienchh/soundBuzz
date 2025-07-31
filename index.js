@@ -58,6 +58,25 @@ io.on('connection', (socket) => {
     io.emit('buzzable', null)
     console.log(`Clear buzzes`)
   })
+
+  socket.on('buzzes', (buzzes) => {
+    const buzzed = buzzes[buzzes.length - 1];
+    if (!buzzed) return;
+    const buzzerButton = document.querySelector('.js-buzzer');
+    if (buzzerButton) {
+      buzzerButton.classList.add('buzzed');
+      buzzerButton.disabled = true;
+    }
+  });
+  
+  socket.on('buzzable', () => {
+    const buzzerButton = document.querySelector('.js-buzzer');
+    if (buzzerButton) {
+      buzzerButton.classList.remove('buzzed');
+      buzzerButton.disabled = false;
+    }
+  });
+  
 })
 
 // Get local IPv4 address

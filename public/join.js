@@ -38,7 +38,7 @@ buzzers.forEach(buzzer => {
     const buzzerText = buzzer.textContent; // Capture the text inside the buzzer button
     socket.emit('buzz', { ...user, buzzerText }); // Emit the text content along with the user information
     buzzers.forEach(b => {
-      b.style.visibility = 'hidden';
+      b.classList.add('buzzer-disabled');
     });
   })
 })
@@ -48,17 +48,17 @@ buzzers_npltdp.forEach(buzzer => {
     const buzzerText = buzzer.textContent; // Capture the text inside the buzzer button
     socket.emit('buzz_npltdp', { ...user, buzzerText }); // Emit the text content along with the user information
     buzzers_npltdp.forEach(b => {
-      b.style.visibility = 'hidden';
+      b.classList.add('buzzer-disabled');
     });
   })
 })
 
 socket.on('buzzable', () => {
   buzzers.forEach(buzzer => {
-    buzzer.style.visibility = 'visible';
+    buzzer.classList.remove('buzzer-disabled');
   })
   buzzers_npltdp.forEach(buzzer => {
-    buzzer.style.visibility = 'visible';
+    buzzer.classList.remove('buzzer-disabled');
   })
 })
 

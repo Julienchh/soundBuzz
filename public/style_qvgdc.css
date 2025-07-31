@@ -1,171 +1,144 @@
+/* Base Reset */
 * {
   box-sizing: border-box;
-}
-
-html, body {
-  overflow: hidden;
-  height: 100%;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
   margin: 0;
-  font-family: 'Roboto', sans-serif;
-  background: radial-gradient(circle, #001f3f 0%, #00102a 100%);
-  color: #ffffff;
-  text-align: center; /* Centre le texte par défaut */
-}
-
-.js-clear {
-  max-width: 200px;
-}
-
-.js-join {
-  width: 90%;
-  max-width: 400px;
-  background: rgba(255, 215, 0, 0.1);
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-}
-
-.js-buzzer {
-  width: 100%;
-  margin: 10px 0;
-}
-
-body,
-input,
-button {
-  font-size: 1em;
-}
-
-ol {
-  text-align: left;
-}
-
-li {
-  margin: 0.5em 0;
+  padding: 0;
 }
 
 .hidden {
   display: none;
 }
 
-header {
-  background-color: transparent;
+html, body {
+  overflow: hidden;
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+  background: radial-gradient(circle at center, #001f3f 0%, #000c1a 100%);
+  color: #ffffff;
+  text-align: center;
 }
 
-.logo {
-  width: 100%;
-  max-width: 250px;
-  padding: 1em 0;
+/* Layout */
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 1rem;
 }
 
 .container {
-  width: 90%;
-  max-width: 400px; /* Réduit la largeur maximale */
-  padding: 1em;
+  width: 100%;
+  max-width: 420px;
+  padding: 1rem;
 }
 
-.view button:last-child {
-  margin-bottom: 0;
-}
-
-.buzzer-mode {
-  background-color: rgba(255, 215, 0, 0.2);
-  color: #000;
-}
-
-input[type="text"],
-input[type="number"],
-button {
-  border-radius: 5px;
-  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-  font-weight: 500;
-}
-
-input[type="text"],
-input[type="number"] {
-  border: 1px solid #FFD700;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  padding: 10px;
-}
-
-input[type="text"]:focus,
-input[type="number"]:focus,
-input[type="text"]:active,
-input[type="number"]:active {
-  border-color: #FFD700;
-  box-shadow: 0 0 0 3px #FFD700;
-  outline: none;
-}
-
-button:active {
-  box-shadow: rgba(255, 215, 0, 0.6) 0px 0px 0px 3px;
-  outline: 0px;
-  transform: translateY(1px);
-}
-
-button:focus {
-  box-shadow: 0 0 0 3px #FFD700;
+/* Écran de choix d'équipe */
+.js-join {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
 }
 
 .main-image {
-  width: 80%;
-  max-width: 250px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 260px;
+  margin: 0 auto 1rem;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
 }
 
-.buzzer-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  width: 100%;
-  max-width: 300px; /* Réduit la largeur pour téléphones */
-  margin: 20px auto;
-}
-
-.buzzer {
-  text-align: center;
-  height: 8em;
-  width: 100%;
-  font-size: 1.5em;
+/* Boutons de sélection d'équipe */
+.js-join button {
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 0.75rem;
   border-radius: 10px;
-  background: linear-gradient(135deg, #0055a5, #002b54);
-  color: #FFD700;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  transition: background 0.3s, transform 0.3s;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  color: white;
 }
 
-.buzzer:focus {
-  box-shadow: 0 0 0 3px #FFD700;
+.js-join button:hover {
+  transform: scale(1.05);
+}
+
+/* Couleurs d'équipe */
+button.btn-orange {
+  background: linear-gradient(145deg, #ff9800, #cc7a00);
+}
+
+button.btn-orange:hover {
+  box-shadow: 0 0 12px #ff9800aa;
+}
+
+button.btn-blue {
+  background: linear-gradient(145deg, #007bff, #0056b3);
+}
+
+button.btn-blue:hover {
+  box-shadow: 0 0 12px #007bffaa;
+}
+
+/* Grille de buzzers */
+.buzzer-grid {
+  display: none; /* Masqué par défaut */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 2rem auto 1rem;
+  width: 100%;
+  max-width: 320px;
+}
+
+/* Affichage conditionnel */
+.view.js-joined .buzzer-grid {
+  display: grid;
+}
+
+/* Boutons de buzzer */
+.buzzer {
+  padding: 1.5rem 0;
+  font-size: 1.6rem;
+  font-weight: bold;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #002f6c, #001a3f);
+  color: #FFD700;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .buzzer:hover,
 .buzzer:active {
-  background: linear-gradient(135deg, #004085, #001f3f);
+  background: linear-gradient(135deg, #001f4f, #000c28);
   transform: scale(1.05);
 }
 
+/* Texte sous buzzers */
+.js-joined-info {
+  margin-top: 1rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* Bouton secondaire */
 .js-edit {
   display: inline-block;
-  padding: 5px 10px;
-  font-size: 1em;
+  margin-top: 1rem;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #001f3f;
   background: linear-gradient(135deg, #FFD700, #FFC000);
-  border: 2px solid #FFD700;
-  border-radius: 8px;
+  border: none;
+  border-radius: 10px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background 0.3s, color 0.3s, transform 0.3s;
+  transition: background 0.3s, transform 0.2s, color 0.2s;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
@@ -177,7 +150,6 @@ button:focus {
 
 .js-edit:active {
   background: linear-gradient(135deg, #FFA500, #FF8C00);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
   transform: translateY(1px);
 }
 
@@ -186,38 +158,107 @@ button:focus {
   box-shadow: 0 0 0 3px #FFD700;
 }
 
+/* Scrollbar esthétique */
 ::-webkit-scrollbar {
   width: 12px;
 }
-
 ::-webkit-scrollbar-thumb {
+  background: rgba(255, 215, 0, 0.4);
   border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
 }
 
-/* Styles spécifiques pour les petits écrans */
+
+h2 {
+  color: #FFD700; /* or doré lisible */
+  font-size: 2rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  margin-bottom: 1rem;
+}
+
+.js-join p {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+/* Selecteur d'équipe */
+.js-join select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #FFD700;
+  text-align: center;
+  backdrop-filter: blur(4px);
+  margin-bottom: 1rem;
+  appearance: none;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+  transition: all 0.2s ease;
+}
+
+.js-join select:focus {
+  border-color: #FFD700;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.4);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.js-join select option {
+  background-color: #001f3f;
+  color: #ffffff;
+}
+
+/* Bouton rejoindre */
+.js-join button[type="submit"] {
+  background: linear-gradient(145deg, #FFD700, #FFB800);
+  color: #000;
+  font-weight: bold;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+}
+
+.js-join button[type="submit"]:hover {
+  background: linear-gradient(145deg, #FFC700, #FFA800);
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.5);
+  transform: scale(1.04);
+}
+
+
+/* Responsive */
 @media (max-width: 768px) {
   html {
-    overflow: auto; /* Permet de scroller si nécessaire sur certains écrans */
+    overflow: auto;
   }
-
-  body {
-    padding: 10px;
-  }
-
 
   .js-join,
   .buzzer-grid,
   .container {
-    width: 100%; /* Utilise toute la largeur */
+    width: 100%;
   }
 
   .buzzer {
-    height: 6em;
-    font-size: 1.2em;
+    padding: 2.5rem 0;
+    font-size: 2rem;
+    min-height: 100px;
   }
+  
 
   .main-image {
-    max-width: 200px; /* Réduit l'image */
+    max-width: 200px;
   }
+}
+
+.buzzer-disabled {
+  pointer-events: none;
+  background: #555 !important;
+  color: #aaa !important;
+  box-shadow: none !important;
+  transition: all 0.4s ease;
+  filter: grayscale(100%) brightness(0.7);
+  transform: scale(0.95);
 }
